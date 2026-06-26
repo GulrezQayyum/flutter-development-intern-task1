@@ -70,7 +70,3 @@ flutter run
 ## Contributing
 
 Contributions are welcome. Feel free to fork the repository and submit a pull request with improvements.
-
-## License
-
-Add a license file if you plan to share this project publicly.
