@@ -38,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
             const SizedBox(height: 20),
             const Text(
-              "Sharpen your mind, one quiz at a time.",
+              "What needs to be done today?",
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,

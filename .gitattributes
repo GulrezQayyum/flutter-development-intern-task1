@@ -1,5 +1,12 @@
+*.dart linguist-language=Dart
+
+*.c linguist-language=Text
+*.cpp linguist-language=Text
+*.h linguist-language=Text
+*.hpp linguist-language=Text
+CMakeLists.txt linguist-language=Text
+
 android/** linguist-vendored
-ios/** linguist-vendored
 linux/** linguist-vendored
-macos/** linguist-vendored
 windows/** linguist-vendored
+macos/** linguist-vendored
