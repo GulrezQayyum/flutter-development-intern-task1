@@ -9,4 +9,8 @@ CMakeLists.txt linguist-language=Text
 android/** linguist-vendored
 linux/** linguist-vendored
 windows/** linguist-vendored
+<<<<<<< HEAD
 macos/** linguist-vendored
+=======
+macos/** linguist-vendored
+>>>>>>> 1dbd64ede964198788d82cf4a2e0510beb37aa0f
