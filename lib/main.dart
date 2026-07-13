@@ -3,9 +3,14 @@ import 'screens/splash_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/main_shell.dart';
 import 'services/task_service.dart';
+import 'screens/signup_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(const TaskManagementApp());
   await TaskService.init();
   runApp(const TaskManagementApp());
 }
@@ -26,6 +31,7 @@ class TaskManagementApp extends StatelessWidget {
       home: const LoginScreen(),
       routes: {
         '/splash': (context) => const SplashScreen(),
+        '/signup': (context) => const SignupScreen(),
         '/login': (context) => const LoginScreen(),
         '/home': (context) => const MainShell(),
       },

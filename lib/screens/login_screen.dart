@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../services/auth_service.dart';
+import 'signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -12,6 +15,8 @@ class _LoginScreenState extends State<LoginScreen> {
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
   bool _obscurePassword = true;
+  bool _isLoading = false;
+  String? _errorMessage;
 
   @override
   void initState() {
@@ -31,7 +36,6 @@ class _LoginScreenState extends State<LoginScreen> {
     if (value == null || value.isEmpty) {
       return 'Email is required';
     }
-    // Basic email validation regex
     const String emailPattern =
         r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
     final RegExp regex = RegExp(emailPattern);
@@ -51,25 +55,84 @@ class _LoginScreenState extends State<LoginScreen> {
     return null;
   }
 
-  void _handleLogin() {
-    if (_formKey.currentState!.validate()) {
-      // Navigate to splash screen after login
+  Future<void> _handleLogin() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+
+    try {
+      await AuthService.signIn(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+      // AuthGate listens for the auth state change and will swap to
+      // MainShell automatically, but we still show the splash animation
+      // for a polished first-login experience.
+      if (!mounted) return;
       Navigator.pushReplacementNamed(context, '/splash');
+    } on FirebaseAuthException catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _errorMessage = AuthService.getErrorMessage(e);
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _errorMessage = 'Something went wrong. Please try again.';
+      });
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
-  void _showForgotPasswordDialog() {
-    showDialog(
+  Future<void> _showForgotPasswordDialog() async {
+    final TextEditingController resetController =
+    TextEditingController(text: _emailController.text);
+
+    await showDialog(
       context: context,
-      builder: (BuildContext context) {
+      builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: const Text('Forgot Password?'),
-          content: const Text(
-              'Please contact the administrator to reset your password.'),
+          title: const Text('Reset Password'),
+          content: TextField(
+            controller: resetController,
+            keyboardType: TextInputType.emailAddress,
+            decoration: const InputDecoration(
+              labelText: 'Email',
+              prefixIcon: Icon(Icons.email),
+            ),
+          ),
           actions: [
             TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('OK'),
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                final email = resetController.text.trim();
+                Navigator.of(dialogContext).pop();
+                if (email.isEmpty) return;
+                try {
+                  await AuthService.sendPasswordResetEmail(email);
+                  if (!mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Password reset email sent.'),
+                    ),
+                  );
+                } on FirebaseAuthException catch (e) {
+                  if (!mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(AuthService.getErrorMessage(e))),
+                  );
+                }
+              },
+              child: const Text('Send Link'),
             ),
           ],
         );
@@ -128,6 +191,34 @@ class _LoginScreenState extends State<LoginScreen> {
                     key: _formKey,
                     child: Column(
                       children: [
+                        if (_errorMessage != null) ...[
+                          Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: Colors.red.shade50,
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(color: Colors.red.shade200),
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(Icons.error_outline,
+                                    color: Colors.red.shade700, size: 20),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    _errorMessage!,
+                                    style: TextStyle(
+                                      color: Colors.red.shade700,
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                        ],
                         // Email Field
                         TextFormField(
                           controller: _emailController,
@@ -144,6 +235,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           keyboardType: TextInputType.emailAddress,
                           validator: _validateEmail,
+                          enabled: !_isLoading,
                         ),
                         const SizedBox(height: 16),
                         // Password Field
@@ -174,30 +266,41 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           obscureText: _obscurePassword,
                           validator: _validatePassword,
+                          enabled: !_isLoading,
                         ),
                         const SizedBox(height: 8),
                         // Forgot Password Link
                         Align(
                           alignment: Alignment.centerRight,
                           child: TextButton(
-                            onPressed: _showForgotPasswordDialog,
+                            onPressed:
+                            _isLoading ? null : _showForgotPasswordDialog,
                             child: const Text('Forgot Password?'),
                           ),
                         ),
-                        const SizedBox(height: 24),
+                        const SizedBox(height: 16),
                         // Login Button
                         SizedBox(
                           width: double.infinity,
                           height: 48,
                           child: ElevatedButton(
-                            onPressed: _handleLogin,
+                            onPressed: _isLoading ? null : _handleLogin,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.blue.shade600,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
                               ),
                             ),
-                            child: const Text(
+                            child: _isLoading
+                                ? const SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Colors.white,
+                              ),
+                            )
+                                : const Text(
                               'Login',
                               style: TextStyle(
                                 fontSize: 16,
@@ -206,6 +309,28 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                           ),
+                        ),
+                        const SizedBox(height: 16),
+                        // Sign Up Link
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text("Don't have an account?"),
+                            TextButton(
+                              onPressed: _isLoading
+                                  ? null
+                                  : () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                    const SignupScreen(),
+                                  ),
+                                );
+                              },
+                              child: const Text('Sign Up'),
+                            ),
+                          ],
                         ),
                       ],
                     ),
