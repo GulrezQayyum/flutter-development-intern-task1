@@ -192,7 +192,6 @@ Throughout this internship project I learned:
 | Week 3 | ✅ Completed |
 | Week 4 | ✅ Completed |
 | Week 5 | ✅ Completed |
-| Week 6 | ⏳ In Progress |
 
 ---
 
