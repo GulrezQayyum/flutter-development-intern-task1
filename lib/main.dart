@@ -4,13 +4,15 @@ import 'screens/login_screen.dart';
 import 'screens/main_shell.dart';
 import 'services/task_service.dart';
 import 'screens/signup_screen.dart';
+import 'screens/auth_gate.dart';
 import 'package:firebase_core/firebase_core.dart';
-
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(const TaskManagementApp());
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await TaskService.init();
   runApp(const TaskManagementApp());
 }
@@ -27,8 +29,9 @@ class TaskManagementApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         useMaterial3: true,
       ),
-      // Set LoginScreen as the initial screen
-      home: const LoginScreen(),
+      // AuthGate decides between LoginScreen and MainShell based on
+      // whether there's an active Firebase Auth session.
+      home: const AuthGate(),
       routes: {
         '/splash': (context) => const SplashScreen(),
         '/signup': (context) => const SignupScreen(),

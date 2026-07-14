@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'home_screen.dart';
 import 'posts_screen.dart';
 import 'user_profile_screen.dart';
+import 'account_screen.dart';
 
 class MainShell extends StatefulWidget {
   const MainShell({Key? key}) : super(key: key);
@@ -18,6 +19,7 @@ class _MainShellState extends State<MainShell> {
     HomeScreen(),
     PostsScreen(),
     UserProfileScreen(),
+    AccountScreen(),
   ];
 
   @override
@@ -30,7 +32,8 @@ class _MainShellState extends State<MainShell> {
         destinations: const [
           NavigationDestination(icon: Icon(Icons.task_alt), label: 'Tasks'),
           NavigationDestination(icon: Icon(Icons.article), label: 'Posts'),
-          NavigationDestination(icon: Icon(Icons.person), label: 'Profile'),
+          NavigationDestination(icon: Icon(Icons.people), label: 'Users'),
+          NavigationDestination(icon: Icon(Icons.account_circle), label: 'Account'),
         ],
       ),
     );
