@@ -81,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
     } catch (e) {
       if (!mounted) return;
       setState(() {
-        _errorMessage = 'Something went wrong. Please try again.';
+        _errorMessage = 'Something went wrong: $e';
       });
     } finally {
       if (mounted) {

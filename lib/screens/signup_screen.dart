@@ -119,7 +119,7 @@ class _SignupScreenState extends State<SignupScreen> {
     } catch (e) {
       if (!mounted) return;
       setState(() {
-        _errorMessage = 'Something went wrong. Please try again.';
+        _errorMessage = 'Something went wrong: $e';
       });
     } finally {
       if (mounted) {
