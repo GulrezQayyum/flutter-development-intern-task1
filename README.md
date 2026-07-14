@@ -1,72 +1,210 @@
-# Task Manager App
+# Flutter Development Internship - Task Cycle 2
 
-A clean and efficient Flutter task manager that demonstrates a complete user flow from login to task management. It includes persistent local storage, smooth animations, and a modern Material 3 interface built for a polished user experience [web:2][web:3][web:6].
+A Flutter application developed as part of the **Flutter Development Internship Program**. This project demonstrates Flutter fundamentals, API integration, Firebase Authentication, and Cloud Firestore while following clean coding practices.
 
-## Features
+## 📱 Features
 
-- User authentication with email and password validation.
-- Animated splash screen with Lottie after login.
-- Full task CRUD:
-    - Create tasks with title and optional description.
-    - View all saved tasks.
-    - Edit task details or toggle completion status.
-    - Delete tasks with confirmation.
-- Local persistence using `shared_preferences`.
-- Responsive Material 3 UI.
+### ✅ Week 1 - Flutter Basics
+- Flutter project setup
+- Understanding widget tree
+- Stateless and Stateful Widgets
+- Basic UI development
+- Navigation between screens
 
-## Demo Flow
+### ✅ Week 2 - Forms & State Management
+- TextFields and Forms
+- Form Validation
+- setState() state management
+- Custom reusable widgets
+- Responsive layouts
 
-1. Login with valid credentials.
-2. View a 3-second animated splash screen.
-3. Manage tasks on the home dashboard.
+### ✅ Week 3 - Task Management App
+- Add Tasks
+- Delete Tasks
+- Mark tasks as completed
+- Local state management using setState()
+- Clean and responsive UI
 
-## Tech Stack
+### ✅ Week 4 - API Integration
+- Integrated REST API using the `http` package
+- JSON parsing
+- Display data using ListView
+- User Profile Screen
+- Loading Indicator
+- Error Handling
+- Clean networking implementation
+
+### ✅ Week 5 - Firebase Authentication & Firestore
+- Firebase project configuration
+- Email & Password Authentication
+- User Registration
+- User Login
+- Logout functionality
+- Cloud Firestore integration
+- Store user information
+- Retrieve and display user profile data
+- Authentication state management
+
+---
+
+# 📂 Project Structure
+
+```
+lib/
+│
+├── models/
+│
+├── screens/
+│   ├── login_screen.dart
+│   ├── signup_screen.dart
+│   ├── home_screen.dart
+│   ├── profile_screen.dart
+│   └── task_screen.dart
+│
+├── services/
+│   ├── api_service.dart
+│   └── firebase_service.dart
+│
+├── widgets/
+│
+├── utils/
+│
+└── main.dart
+```
+
+---
+
+# 🚀 Technologies Used
 
 - Flutter
 - Dart
-- `shared_preferences`
-- `lottie`
+- Firebase Authentication
+- Cloud Firestore
+- HTTP Package
+- REST API
+- JSON Parsing
 
-## Project Structure
+---
 
-```text
-lib/
-├── main.dart
-├── models/
-│   └── task.dart
-├── screens/
-│   ├── login_screen.dart
-│   ├── splash_screen.dart
-│   └── home_screen.dart
-└── services/
-    └── task_service.dart
+# 📦 Packages Used
+
+```yaml
+dependencies:
+  flutter:
+    sdk: flutter
+
+  http:
+  firebase_core:
+  firebase_auth:
+  cloud_firestore:
 ```
 
-## Getting Started
+---
 
-### Prerequisites
+# ⚙️ Firebase Setup
 
-- Flutter SDK installed.
-- A connected device or emulator.
-- Android Studio, VS Code, or another Flutter-compatible editor.
+1. Create a Firebase Project.
+2. Register your Android application.
+3. Download the `google-services.json` file.
+4. Place it inside:
 
-### Installation
+```
+android/app/
+```
+
+5. Enable
+
+- Email/Password Authentication
+- Cloud Firestore
+
+6. Run
+
+```
+flutter pub get
+```
+
+---
+
+# ▶️ Getting Started
+
+Clone the repository
 
 ```bash
 git clone https://github.com/GulrezQayyum/flutter-development-intern-task1.git
+```
+
+Navigate into the project
+
+```bash
 cd flutter-development-intern-task1
+```
+
+Install dependencies
+
+```bash
 flutter pub get
+```
+
+Run the application
+
+```bash
 flutter run
 ```
 
-## Future Improvements
+---
 
-- Add task categories and priorities.
-- Add due dates and reminders.
-- Add search and filter functionality.
-- Sync tasks with cloud storage.
-- Improve authentication with real backend support.
+# 📸 Screens Included
 
-## Contributing
+- Login Screen
+- Signup Screen
+- Home Screen
+- Task List
+- User Profile
+- API Data List
+- Loading Screen
+- Error Screen
 
-Contributions are welcome. Feel free to fork the repository and submit a pull request with improvements.
+---
+
+# 🎯 Learning Outcomes
+
+Throughout this internship project I learned:
+
+- Flutter fundamentals
+- Widget composition
+- Form validation
+- State management using `setState`
+- REST API integration
+- JSON parsing
+- Firebase Authentication
+- Cloud Firestore CRUD operations
+- Clean project organization
+- Error handling and loading states
+
+---
+
+# 📌 Internship Progress
+
+| Week | Status |
+|------|--------|
+| Week 1 | ✅ Completed |
+| Week 2 | ✅ Completed |
+| Week 3 | ✅ Completed |
+| Week 4 | ✅ Completed |
+| Week 5 | ✅ Completed |
+| Week 6 | ⏳ In Progress |
+
+---
+
+# 👨‍💻 Author
+
+**Gulrez Qayyum**
+
+BS Software Engineering  
+University of Agriculture, Faisalabad
+
+GitHub: https://github.com/GulrezQayyum
+
+---
+
+## ⭐ If you found this project helpful, consider giving it a star.
